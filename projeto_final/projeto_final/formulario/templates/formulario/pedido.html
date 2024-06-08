@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meu Delivery</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'formulario/css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Bem vindo(a) ao Meu Delivery!</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_nome">Nome:</label>
+                {{ form.nome }}
+                {% if form.nome.errors %}
+                    <div class="error">
+                        {{ form.nome.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_celular">Celular:</label>
+                {{ form.celular }}
+                {% if form.celular.errors %}
+                    <div class="error">
+                        {{ form.celular.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_cpf">CPF:</label>
+                {{ form.cpf }}
+                {% if form.cpf.errors %}
+                    <div class="error">
+                        {{ form.cpf.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_endereco">Endereço:</label>
+                {{ form.endereco }}
+                {% if form.endereco.errors %}
+                    <div class="error">
+                        {{ form.endereco.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="id_pedido">Pedido:</label>
+                {{ form.pedido }}
+                {% if form.pedido.errors %}
+                    <div class="error">
+                        {{ form.pedido.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const nomeInput = document.getElementById('id_nome');
+            const cpfInput = document.getElementById('id_cpf');
+            const enderecoInput = document.getElementById('id_endereco');
+            const pedidoInput = document.getElementById('id_pedido');
+            const celularInput = document.getElementById('id_celular');
+            const submitButton = document.getElementById('submitButton');
+
+            const nomeError = document.getElementById('nomeError');
+            const cpfError = document.getElementById('cpfError');
+            const enderecoError = document.getElementById('enderecoError');
+            const pedidoError = document.getElementById('pedidoError');
+            const celularError = document.getElementById('celularError');
+
+            function validateNome() {
+                const nome = nomeInput.value;
+                if (/\d/.test(nome)) {
+                    nomeError.textContent = "O nome não pode conter números.";
+                    return false;
+                } else {
+                    nomeError.textContent = "";
+                    return true;
+                }
+            }
+
+            function validateCPF() {
+                const cpf = cpfInput.value;
+                if (!/^\d{11}$/.test(cpf)) {
+                    cpfError.textContent = "O CPF deve conter 11 dígitos.";
+                    return false;
+                } else {
+                    cpfError.textContent = "";
+                    return true;
+                }
+            }
+
+            function validateEndereco() {
+                const endereco = enderecoInput.value;
+                if (endereco.length === 0) {
+                    enderecoError.textContent = "O endereço não pode estar vazio.";
+                    return false;
+                } else {
+                    enderecoError.textContent = "";
+                    return true;
+                }
+            }
+
+            function validatePedido() {
+                const pedido = pedidoInput.value;
+                if (pedido.length === 0) {
+                    pedidoError.textContent = "O pedido não pode estar vazio.";
+                    return false;
+                } else {
+                    pedidoError.textContent = "";
+                    return true;
+                }
+            }
+
+            function validateCelular() {
+                const celular = celularInput.value;
+                if (!/^\d{10,15}$/.test(celular)) {
+                    celularError.textContent = "O celular deve conter entre 10 e 15 dígitos.";
+                    return false;
+                } else {
+                    celularError.textContent = "";
+                    return true;
+                }
+            }
+
+            function validateForm() {
+                const isNomeValid = validateNome();
+                const isCPFValid = validateCPF();
+                const isEnderecoValid = validateEndereco();
+                const isPedidoValid = validatePedido();
+                const isCelularValid = validateCelular();
+
+                if (isNomeValid && isCPFValid && isEnderecoValid && isPedidoValid && isCelularValid) {
+                    submitButton.disabled = false;
+                } else {
+                    submitButton.disabled = true;
+                }
+            }
+
+            nomeInput.addEventListener('input', validateForm);
+            cpfInput.addEventListener('input', validateForm);
+            enderecoInput.addEventListener('input', validateForm);
+            pedidoInput.addEventListener('input', validateForm);
+            celularInput.addEventListener('input', validateForm);
+
+            validateForm();
+        });
+    </script>
+</body>
+</html>
